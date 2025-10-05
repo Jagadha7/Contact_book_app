@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<!-- Search Form -->
+<form method="GET" action="{{ url_for('index') }}" class="mb-3 d-flex">
+    <input type="text" name="q" class="form-control me-2" placeholder="Search by name or email" value="{{ request.args.get('q', '') }}">
+    <button type="submit" class="btn btn-outline-primary">Search</button>
+</form>
+
+<!-- Add Contact Button -->
+<a href="{{ url_for('add_contact') }}" class="btn btn-success mb-3">Add Contact</a>
+
+<!-- Contacts Table -->
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Name</th><th>Email</th><th>Phone</th><th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% if contacts %}
+            {% for contact in contacts %}
+            <tr>
+                <td>{{ contact.name }}</td>
+                <td>{{ contact.email }}</td>
+                <td>{{ contact.phone }}</td>
+                <td>
+                    <a href="{{ url_for('update_contact', id=contact.id) }}" class="btn btn-primary btn-sm">Edit</a>
+                    <a href="{{ url_for('delete_contact', id=contact.id) }}" class="btn btn-danger btn-sm"
+                       onclick="return confirm('Delete this contact?')">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        {% else %}
+            <tr>
+                <td colspan="4" class="text-center text-muted">No contacts found.</td>
+            </tr>
+        {% endif %}
+    </tbody>
+</table>
+
+{% endblock %}
